@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>RISC-V KCI bridge</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> RISC-V KCI bridge
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sytem-design">Sytem design</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#available-services">Available services</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#run-tests">Run tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-boot-tests">Run boot tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run-builds">Run builds</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#submit-tests">Submit tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#synchronize-submissions">Synchronize submissions</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="dependencies/">Dependencies</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="runners/">Runners</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">RISC-V KCI bridge</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="risc-v-kernelci-bridge">RISC-V KernelCI bridge</h1>
+<p>FastAPI app that provides REST services which give any maintainer or kernel developer a simple way of submitting tests to <a href="https://kernelci.org/">KernelCI</a> without adjusting any existing infrastructure to KernelCI's needs.</p>
+<p>The project makes use of <a href="https://github.com/kernelci/kcidb">KCIDB</a> to submit results, meaning you'll need a token to perform submissions. To obtain a token please follow the instructions described in <a href="https://github.com/kernelci/kcidb">KCIDB github repository</a>.</p>
+<h2 id="project-layout">Project layout</h2>
+<pre><code>docker-compose-dev.yml    # Docker compose file to use in development
+docker-compose.yml        # Docker compose file to use in production
+Makefile                  # Used to run typically used commands
+log.ini                   # Logging configuration file
+caddy/                    
+    Caddyfile             # Caddy configuration file
+backend/    
+    Dockerfile            # FastAPI app Dockerfile
+    app/
+        app/              # FastAPI app main directory
+            api/          # Main API directory
+                v1/
+                    endpoints/          # Contains all endpoint implementations
+                        builds.py       # Submit a build endpoint
+                        tests.py        # Submit tests endpoint
+                        boot.py         # Submit boot tests endpoint
+                        ...  
+                    api.py              # Gathers all endpoints into a single router
+            core/
+                config.py               # Contains main settings class
+                db.py                   # Handles DB specific settings
+                runners.py              # Contains all general runner functions
+            middleware/                 # All middlewares go here
+                json_middleware.py      # Specific for wrongly formed json sent by TuxSuite
+            models/                     # Database models (use SQLModel/SQLAlchemy)
+                builds.py
+                tests.py
+            schemas/                    # Pydantic schemas used when parsing requests bodies
+                builds.py               # Models for the submit build service
+                tests.py                # Models for the submit tests service
+                ...
+            services/                   # Contains code that connects to third-party services (runners may be added here)
+                kcidb_services.py       # KCIDB related functions
+                runner_service.py       # General runner functions
+                ...
+            utils/                      # Utilitary functions and classes
+                exceptions.py
+                test_parser.py
+            main.py                     # Defines the main FastAPI app
+        pypoetry.toml
+        poetry.lock
+</code></pre>
+<h2 id="sytem-design">Sytem design</h2>
+<p>Below there is a diagram portraing the design of the system:</p>
+<p><img alt="RISC-V App design" src="system_diagram.png" /></p>
+<h2 id="available-services">Available services</h2>
+<p>The app provides services that allow running kernel tests and builds, and submit tests.
+There is a separate sync service which is meant to be called once a day to retry failed submissions.</p>
+<h3 id="run-tests">Run tests</h3>
+<p>The endpoint is <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/tests.py#L25"><code>/api/v1/tests/run</code></a>. To run tests you need to send a <code>POST HTTP</code> request with a body with this structure:</p>
+<pre><code class="language-python">    {
+        &quot;runner&quot;: &quot;string&quot;,
+        &quot;build_id&quot;: &quot;string&quot;,
+        &quot;kernel_image_url&quot;: &quot;string&quot;,
+        &quot;modules_url&quot;: &quot;string&quot;,
+        &quot;tests&quot;: [
+            &quot;string&quot;
+        ],
+        &quot;collection&quot;: &quot;string&quot;
+    }
+</code></pre>
+<p>The specific details on each of the fields can be found in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/schemas/tests.py#L19"><code>TestSuite</code> schema</a>.</p>
+<h3 id="run-boot-tests">Run boot tests</h3>
+<p>The endpoint is <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/boot.py#L23"><code>/api/v1/boot-test/run</code></a>. To run boot tests you need to send a <code>POST HTTP</code> request with a body with this structure:</p>
+<pre><code class="language-python">    {
+        &quot;runner&quot;: &quot;string&quot;,
+        &quot;build_id&quot;: &quot;string&quot;,
+        &quot;kernel_image_url&quot;: &quot;string&quot;,
+        &quot;modules_url&quot;: &quot;string&quot;
+    }
+</code></pre>
+<p>The specific details on each of the fields can be found in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/schemas/tests.py#L19"><code>TestSuite</code> schema</a>.</p>
+<h3 id="run-builds">Run builds</h3>
+<p>The endpoint is <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/builds.py#L20"><code>/api/v1/builds/run</code></a>. To run builds you need to send a <code>POST HTTP</code> request with a body with this structure:</p>
+<pre><code class="language-python">    {
+        &quot;runner&quot;: &quot;string&quot;,
+        &quot;toolchain&quot;: &quot;string&quot;,
+        &quot;tree&quot;: &quot;string&quot;,
+        &quot;branch&quot;: &quot;string&quot;,
+        &quot;kconfig&quot;: &quot;string&quot;,
+        &quot;fragments&quot;: [
+            &quot;string&quot;
+        ]
+    }
+</code></pre>
+<p>The specific details on each of the fields can be found in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/schemas/builds.py#L7"><code>BuildData</code> schema</a>.</p>
+<h3 id="submit-tests">Submit tests</h3>
+<p>Tests can be run in an outside system but still use this app to submit results to KernelCI. To do so you have to send a <code>POST HTTP</code> to <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/tests.py#L50"><code>/api/v1/tests/submit</code></a> request with a body with this structure:</p>
+<pre><code class="language-python">    {
+        &quot;test_uid&quot;: &quot;string&quot;,
+        &quot;build_id&quot;: &quot;string&quot;,
+        &quot;tests&quot;: [
+            {
+            &quot;test_name&quot;: &quot;string&quot;,
+            &quot;test_collection&quot;: &quot;string&quot;,
+            &quot;result&quot;: &quot;string&quot;,
+            &quot;logs&quot;: &quot;string&quot;
+            }
+        ]
+    }
+</code></pre>
+<p>The specific details on each of the fields can be found in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/schemas/tests.py#L13"><code>RunnerTestsResults</code> schema</a>.</p>
+<h3 id="synchronize-submissions">Synchronize submissions</h3>
+<p>A <code>POST HTTP</code> to <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/sync.py#L12"><code>/api/v1/sync/results</code></a> synchronizes non-submitted tests results. While <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/vi/endpoints/sync.py#L30"><code>/api/v1/sync/builds</code></a> synchronizes non-submitted builds.</p>
+<p>Both of these services expect and empty body.</p>
+<p>This endpoints correspond to the RISC-V Sync Service seen in the system diagram.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="api/" class="btn btn-neutral float-right" title="API Reference">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="api/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2025-06-05 23:27:47.954670+00:00
+-->

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Runners - RISC-V KCI bridge</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Runners";
+        var mkdocs_page_input_path = "runners.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> RISC-V KCI bridge
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dependencies/">Dependencies</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Runners</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#locating-runners">Locating runners</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#defining-new-runners">Defining new runners</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-defining-a-code">1. Defining a code</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-schedule-tests-and-boot-tests">2. Schedule tests and boot tests</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-schedule-builds">3. Schedule builds</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-test-boot-test-and-build-callbacks">4. Test, boot test and build callbacks</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#a-define-the-schemas">a. Define the schemas</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#b-create-the-services">b. Create the services</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#c-add-the-services-to-the-main-router">c. Add the services to the main router</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-configuring-callback-names">5. Configuring callback names</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">RISC-V KCI bridge</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Runners</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="runners">Runners</h1>
+<p>We define a runner as a mechanism for running tests and/or builds. As shown in the <a href="../#sytem-design">diagram</a> in the home, we assume the runners will work asynchronously. This means we will schedule builds, tests and boot tests and the runner will notify their completion.</p>
+<p>Furthermore, we assume that each runner accepts a URL as a callback, and that it performs a <code>POST HTTP</code> request when it finishes running.</p>
+<p>Depending on the use of the runner you'll need to either define a <code>TestRunner</code>, a <code>BuildRunner</code> or both.</p>
+<p>By default we have implemented a <a href="https://tuxsuite.com/home">TuxSuite</a> runner, which runs both tests and builds (note that TuxSuite offers 1,000 tests runs per month).</p>
+<h2 id="locating-runners">Locating runners</h2>
+<p>All available runners can be found in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py"><code>runners.py</code></a> file, under the <code>AVAILABLE_RUNNERS</code> type.</p>
+<p>This list is kept as an easy way to access the codes for all available runners.</p>
+<h2 id="defining-new-runners">Defining new runners</h2>
+<p>For each runner you need to define a code, a function to schedule tests or builds, and a set of callbacks.</p>
+<h3 id="1-defining-a-code">1. Defining a code</h3>
+<p>The code should be unique and be included in the <code>AVAILABLE_RUNNERS</code> in <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py"><code>runners.py</code></a>.</p>
+<p>For example, we can see that the TuxSuite runner has <code>tuxsuite</code> as a code.</p>
+<h3 id="2-schedule-tests-and-boot-tests">2. Schedule tests and boot tests</h3>
+<p>A test scheduler is any kind of callable that follows the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py#L8"><code>TestRunner</code> protocol</a>. This can be used to schedule both tests and boot tests.</p>
+<p>This callable needs to send the test to the runner service, and return a unique identifier for the operation. This id will used when the callback is called to identify which operation was completed.
+Storing the identifier allows you to schedule multiple tests at once, even if the order in which they finished is different from how they were scheduled.</p>
+<p>The scheduler need to be defined in any module accesible by <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py"><code>runners.py</code></a>. For example, for the TuxSuite runner we define the test scheduler in <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/services/tuxsuite_service.py#L13"><code>tuxsuite_service.py</code></a>.</p>
+<p>After creating it, the scheduler it needs to be added to the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py#L43"><code>runners.py</code></a> file, under the <code>get_test_runner</code> function.</p>
+<p>For example, let's assume we're adding a new <code>demo</code> runner. Integrating this runner could look like this:</p>
+<pre><code class="language-python">AVAILABLE_RUNNERS = Literal['tuxsuite', 'demo']
+
+def get_test_runner(runner: str) -&gt; TestRunner:
+    match runner:
+        case 'tuxsuite':
+            return run_tuxsuite_tests
+        # We add a new case for the demo runner
+        case 'build':
+            # demo_test_runner is implemented elsewhere and imported
+            return demo_test_runner
+        case _:
+            raise RunnerNotSupported(runner)
+</code></pre>
+<h3 id="3-schedule-builds">3. Schedule builds</h3>
+<p>A build scheduler is a callable that complies to the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py#L24"><code>BuildRunner</code>protocol</a>.</p>
+<p>Build schedulers similarly to test schedulers, meaning they must return a unique identifier representing the build operation.</p>
+<p>For TuxSuite, the build runner can be found in <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/services/tuxsuite_service.py#L27"><code>tuxsuite_service.py</code></a>.</p>
+<p>After creating it, the scheduler it needs to be added to the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py#L87"><code>runners.py</code></a> file, under the <code>get_build_runner</code> function.</p>
+<p>For example, adding a new <code>demo</code> build runner could look like this:</p>
+<pre><code class="language-python">AVAILABLE_RUNNERS = Literal['tuxsuite', 'demo']
+
+def get_build_runner(runner: str) -&gt; BuildRunner:
+    match runner:
+        case 'tuxsuite':
+            return run_tuxsuite_build
+        # We add a new case for the demo runner
+        case 'demo':
+            # demo_build_runner is implemented elsewhere and imported
+            return demo_build_runner
+        case _:
+            raise RunnerNotSupported(runner)
+</code></pre>
+<h3 id="4-test-boot-test-and-build-callbacks">4. Test, boot test and build callbacks</h3>
+<p>Test and build callbacks are <code>REST</code> services that need to comply to the requirements of each runner.</p>
+<p>For instance, <a href="https://docs.tuxsuite.com/callbacks/">TuxSuite callbacks</a> expect a <code>x-tux-payload-signature</code> header used to verify the origin of the request.</p>
+<p>There are several steps to defining the callbacks:</p>
+<h4 id="a-define-the-schemas">a. Define the schemas</h4>
+<p>The schemas represente the body of the requests. They are used by <a href="https://docs.pydantic.dev/latest/concepts/models/"><code>pydatinc</code></a> to verify the body of the request is valid.</p>
+<p>Each runner might have a different schema. It is the responsability of the person adding the new runner to verify what the body of the callback request looks like.</p>
+<p>For example, for the <code>tuxsuite</code> runner we define the <code>TuxSuiteTestRequest</code> and the <code>TuxSuiteBuildRequest</code> models in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/schemas/tuxsuite.py"><code>tuxsuite.py</code></a> file. These follow the structure described in <a href="https://docs.tuxsuite.com/callbacks/">TuxSuite's documentation</a>.</p>
+<h4 id="b-create-the-services">b. Create the services</h4>
+<p>A new file should be added to the <code>backend/app/app/api/v1/endpoints</code> folder. This file will contain the definition of all the necessary callbacks.</p>
+<p>For a runner with code <code>demo</code> the basic structure of the file might look as follows:</p>
+<pre><code class="language-python">from typing import Annotated
+from app.core.db import SessionDep
+from fastapi import APIRouter, Header
+from app.schemas.demo import DemoBuildRequest, DemoTestRequest
+
+# Create a fast api router for the services
+router = APIRouter()
+
+# Test callback, the status code we return depends on what the runner expects
+@router.post(&quot;/test&quot;, status_code=204)
+async def demo_test_callback(x_demo_header: Annotated[str | None, Header()], request: DemoTestRequest, session: SessionDep):
+    &quot;&quot;&quot;
+    Callback for demo runner tests.
+    Args:
+        :x_demo_header (str): An example header. To obtain any other header from the request you just need to add an extra parameter to the function
+        :request (DemoTestRequest): This is the model defined in the previous step.
+        :session (SessionDep): Gives you access to the database
+    &quot;&quot;&quot;
+    ...
+
+# Build callback, the status code we return depends on what the runner expects
+@router.post(&quot;/build&quot;, status_code=204)
+async def demo_build_callback(x_demo_header: Annotated[str | None, Header()], request: DemoBuildRequest, session: SessionDep):
+    &quot;&quot;&quot;
+    Callback for demo runner builds.
+    Args:
+        :x_demo_header (str): An example header. To obtain any other header from the request you just need to add an extra parameter to the function
+        :request (DemoBuildRequest): This is the model defined in the previous step.
+        :session (SessionDep): Gives you access to the database
+    &quot;&quot;&quot;
+    ...
+
+@router.post(&quot;/boot&quot;, status_code=204)
+async def demo_boot_callback(x_tux_payload_signature: Annotated[str | None, Header()], request: TuxSuiteTestRequest,
+                         session: SessionDep):
+    &quot;&quot;&quot;
+    Callback for demo boot test.
+
+    :x_demo_header (str): An example header. To obtain any other header from the request you just need to add an extra parameter to the function
+    :request (DemoTestRequest): This is the model defined in the previous step.
+    :session (SessionDep): Gives you access to the database
+
+    &quot;&quot;&quot;
+    ...
+</code></pre>
+<p>Please make sure that the names of the functions are unique inside the project.</p>
+<h4 id="c-add-the-services-to-the-main-router">c. Add the services to the main router</h4>
+<p>The services will only be visible after they're added to the main app router. To do so you need to modify the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/api/v1/api.py"><code>backend/app/app/api/v1/api.py</code> file</a>.</p>
+<p>For the <code>demo</code> runner it could look as follows:</p>
+<pre><code class="language-python">from fastapi import APIRouter
+from app.api.v1.endpoints import (
+    builds, tests, sync, tuxsuite_callbacks, demo
+)
+
+api_router = APIRouter()
+# These are all the existing paths
+api_router.include_router(tuxsuite_callbacks.router, prefix=&quot;/tuxsuite/callback&quot;, tags=[&quot;tuxsuite callbacks&quot;])
+api_router.include_router(tests.router, prefix=&quot;/tests&quot;, tags=[&quot;tests&quot;])
+api_router.include_router(builds.router, prefix=&quot;/builds&quot;, tags=[&quot;builds&quot;])
+api_router.include_router(sync.router, prefix=&quot;/sync&quot;, tags=[&quot;sync&quot;])
+api_router.include_router(boot.router, prefix=&quot;/boot&quot;, tags=[&quot;boot&quot;])
+# We include the demo router here
+api_router.include_router(sync.router, prefix=&quot;/demo/callback&quot;, tags=[&quot;demo callbacks&quot;])
+</code></pre>
+<p>After this the services under <code>/demo/callback/test</code>, <code>/demo/callback/boot</code>, and <code>/demo/callback/build</code> will be callable from the runner.</p>
+<h3 id="5-configuring-callback-names">5. Configuring callback names</h3>
+<p>By now you should now that <code>TestRunner</code> and <code>BuildRunner</code> have a callback name as a parameter.
+Instead of passing the strings directly we define a couple of functions that allow centralizing obtaining the names.</p>
+<p>Both functions are located in the <a href="https://github.com/RISC-V-KernelCI-Mentorship/riscv-kcidb-bridge/blob/main/backend/app/app/core/runners.py"><code>runners.py</code> file</a>.
+To add a test callback name for a new <code>demo</code> runner you need to modify the <code>get_test_callback_funcname</code> function:</p>
+<pre><code class="language-python">def get_test_callback_funcname(runner: str) -&gt; str:
+    match runner:
+        case 'tuxsuite':
+            return 'tuxsuite_test_callback'
+        case 'demo':
+            # This is the name of the function we defined at test callback
+            return 'demo_test_callback'
+        case _:
+            raise RunnerNotSupported(runner)
+</code></pre>
+<p>For a build callback name for a new <code>demo</code> runner you need to modify the <code>get_build_callback_funcname</code> function:</p>
+<pre><code class="language-python">def get_build_callback_funcname(runner: str) -&gt; str:
+    match runner:
+        case 'tuxsuite':
+            return 'tuxsuite_build_callback'
+        case 'demo':
+            # This is the name of the function we defined at build callback
+            return 'demo_build_callback'
+        case _:
+            raise RunnerNotSupported(runner)
+</code></pre>
+<p>Finally, for a boot callback name for a new <code>demo</code> runner you need to modify the <code>get_boot_callback_funcname</code> function:</p>
+<pre><code class="language-python">def get_boot_callback_funcname(runner: str) -&gt; str:
+    match runner:
+        case 'tuxsuite':
+            return 'tuxsuite_boot_callback'
+        case 'demo':
+            # This is the name of the function we defined at boot callback
+            return 'demo_boot_callback'
+        case _:
+            raise RunnerNotSupported(runner)
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../deployment/" class="btn btn-neutral float-left" title="Deployment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../deployment/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

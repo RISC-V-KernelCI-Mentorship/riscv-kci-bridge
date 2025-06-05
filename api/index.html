@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>API Reference - RISC-V KCI bridge</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "API Reference";
+        var mkdocs_page_input_path = "api.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> RISC-V KCI bridge
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">API Reference</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tests">tests</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tests.run_tests">run_tests</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tests.submit_results">submit_results</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#builds">Builds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.builds">builds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.builds.run_builds">run_builds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#boot-testing">Boot testing</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sync">Sync</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.sync">sync</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.sync.sync_builds">sync_builds</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.sync.sync_results">sync_results</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#tuxsuite-callbacks">TuxSuite Callbacks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tuxsuite_callbacks">tuxsuite_callbacks</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_boot_callback">tuxsuite_boot_callback</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_build_callback">tuxsuite_build_callback</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_test_callback">tuxsuite_test_callback</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dependencies/">Dependencies</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../runners/">Runners</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">RISC-V KCI bridge</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="api-reference">API Reference</h1>
+<h2 id="tests">Tests</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="app.api.v1.endpoints.tests"></a>
+    <div class="doc doc-contents first">
+
+        <p>Services to handle tests runs and submissions.
+They define their own router so they can be integrated into any app.</p>
+<pre><code>from app.ap1.v1.endpoints import tests
+from fastapi import FastAPI
+
+app = FastAPI()
+app.include_router(tests.router)
+</code></pre>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.tests.run_tests" class="doc doc-heading">
+            <code class="highlight language-python">run_tests(tests_data, session, request)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Schedules tests in a runner.
+We only scheduled tests that have not been run for before for the build.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>tests_data</code></b>
+                  (<code><span title="app.schemas.tests.TestSuite">TestSuite</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Tests to schedule</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+            <li>
+              <b><code>request</code></b>
+                  (<code><span title="fastapi.Request">Request</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Request object, allows us to obtain a URL from a function name</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/tests.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/run", status_code=204)
+async def run_tests(tests_data: TestSuite, session: SessionDep, request: Request):
+    """
+    Schedules tests in a runner.
+    We only scheduled tests that have not been run for before for the build.
+
+    :param tests_data: Tests to schedule
+    :param session: Database session
+    :param request: Request object, allows us to obtain a URL from a function name
+    """
+    tests_to_run = []
+    for test in tests_data.tests:
+        tests_has_been_run = session.exec(select(func.count(RunTest.build_id))
+                                        .where(RunTest.build_id == tests_data.build_id)
+                                        .where(RunTest.test == test)).one()
+        if tests_has_been_run &gt; 0:
+            logging.info(f"Test {test} from {tests_data.collection} has already been run for {tests_data.build_id}")
+            continue
+        tests_to_run.append(test)
+
+    if len(tests_to_run) == 0:
+        logging.info(f"No tests to run for build: {tests_data.build_id}")
+        return
+
+    tests_runner = get_test_runner(tests_data.runner)
+
+    test_uid = tests_runner(tests_data.kernel_image_url, tests_data.modules_url,
+                      tests_to_run, "qemu-riscv64",
+                      str(request.url_for(get_test_callback_funcname(tests_data.runner))))
+    scheduled_test = ScheduledTest(test_uid=test_uid, build_id=tests_data.build_id, test_collection=tests_data.collection,
+                                   tests=tests_to_run, runner=tests_data.runner)
+    session.add(scheduled_test)
+    for test in tests_to_run:
+        run_test = RunTest(build_id=tests_data.build_id, test=test)
+        session.add(run_test)
+    # Both queries are run in a transaction
+    session.commit()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.tests.submit_results" class="doc doc-heading">
+            <code class="highlight language-python">submit_results(results, session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Submit test results to KCIDB. In this case test runner is not relevant.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>results</code></b>
+                  (<code><span title="app.schemas.tests.RunnerTestsResults">RunnerTestsResults</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Test results passed as the body of the request</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/tests.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/submit", status_code=204)
+async def submit_results(results: RunnerTestsResults, session: SessionDep):
+    """
+    Submit test results to KCIDB. In this case test runner is not relevant.
+
+    :param results: Test results passed as the body of the request
+    :param session: Database session
+    """
+    logging.info(f"Received results for {results.test_uid}")
+    parsed_results = parse_results2kcidb(results)
+    json_results = [item.to_json() for item in parsed_results]
+
+    try:
+        submit_kcidb(json_results)
+    except KCIDBSubmitionException:
+        test_row = TestResults(test_uid=results.test_uid, build_id=results.build_id, results=json_results)
+        session.add(test_row)
+        session.commit() </code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="builds">Builds</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="app.api.v1.endpoints.builds"></a>
+    <div class="doc doc-contents first">
+
+        <p>Services to handle build runs.
+They define their own router so they can be integrated into any app.</p>
+<pre><code>from app.ap1.v1.endpoints import builds
+from fastapi import FastAPI
+
+app = FastAPI()
+app.include_router(builds.router)
+</code></pre>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.builds.run_builds" class="doc doc-heading">
+            <code class="highlight language-python">run_builds(build_data, session, request)</code>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Submit a build request.
+The requests stores all the information requireed for the builds along with an identifier.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>build_data</code></b>
+                  (<code><span title="app.schemas.builds.BuildData">BuildData</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Data required by runners to perform a build</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+            <li>
+              <b><code>request</code></b>
+                  (<code><span title="fastapi.Request">Request</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Request object</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/builds.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/run", status_code=204)
+def run_builds(build_data: BuildData, session: SessionDep, request: Request):
+    """
+    Submit a build request.
+    The requests stores all the information requireed for the builds along with an identifier.
+
+    :param build_data: Data required by runners to perform a build
+    :param session: Database session
+    :param request: Request object
+    """
+    build_runner = get_build_runner(build_data.runner)
+    # Schedule the build
+    build_uid = build_runner(build_data.toolchain, "riscv", build_data.tree, build_data.branch,
+                             build_data.kconfig, build_data.fragments,
+                             str(request.url_for(get_build_callback_funcname(build_data.runner))))
+    # Store it in the database
+    scheduled_build = ScheduledBuild(build_uid=build_uid,
+                                    toolchain=build_data.toolchain,
+                                    tree=build_data.tree,
+                                    branch=build_data.branch,
+                                    kconfig=build_data.kconfig,
+                                    fragments=build_data.fragments,
+                                    runner=build_data.runner)
+    session.add(scheduled_build)
+    session.commit()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="boot-testing">Boot testing</h2>
+<p>:: app.api.v1.endpoints.boot</p>
+<h2 id="sync">Sync</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="app.api.v1.endpoints.sync"></a>
+    <div class="doc doc-contents first">
+
+        <p>Services that handle re-trying failed submsissions.
+They define their own router so they can be integrated into any app.</p>
+<pre><code>from app.ap1.v1.endpoints import sync
+from fastapi import FastAPI
+
+app = FastAPI()
+app.include_router(sync.router)
+</code></pre>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.sync.sync_builds" class="doc doc-heading">
+            <code class="highlight language-python">sync_builds(session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Looks for unsubmitted builds and tries to submit them again.
+If the re try fails the results are kept stored, so that they can be submitted later.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session. Used to access stored results</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/sync.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/builds", status_code=204)
+async def sync_builds(session: SessionDep):
+    """
+    Looks for unsubmitted builds and tries to submit them again.
+    If the re try fails the results are kept stored, so that they can be submitted later.
+
+    :param session: Database session. Used to access stored results
+    """
+    non_submitted_builds = session.exec(select(RunBuild).where(RunBuild.submitted == False)).all()
+
+    for build in non_submitted_builds:
+        build_uid = build.build_uid
+        submission = build.submission
+        # Only submit results with submitted false
+        logging.info(f"Submitting build for build uid {build_uid}")
+        try:
+            submit_kcidb([submission])
+            mark_build_as_submitted(build_uid, session)
+
+        except:
+            logging.warning(f"Could not submit build with uid {build_uid}")
+    session.commit()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.sync.sync_results" class="doc doc-heading">
+            <code class="highlight language-python">sync_results(session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Looks for unsubmitted test results and tries to submit them again.
+If the re try fails the results are kept stored, so that they can be submitted later.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session. Used to access stored results</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/sync.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/results", status_code=204)
+async def sync_results(session: SessionDep):
+    """
+    Looks for unsubmitted test results and tries to submit them again.
+    If the re try fails the results are kept stored, so that they can be submitted later.
+
+    :param session: Database session. Used to access stored results
+    """
+    non_submitted_tests = session.exec(select(TestResults)).all()
+
+    for test in non_submitted_tests:
+        test_uid = test.test_uid
+        results = test.results
+        # Only submit results with submitted false
+        logging.info(f"Submitting results for test uid {test_uid}")
+        try:
+            submit_kcidb(results)
+            session.delete(test)
+            mark_tests_as_submitted(test_uid, session)
+
+        except:
+            logging.warning(f"Could not submit results for test uid {test_uid}")
+    session.commit()</code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="tuxsuite-callbacks">TuxSuite Callbacks</h2>
+
+
+<div class="doc doc-object doc-module">
+
+
+
+<a id="app.api.v1.endpoints.tuxsuite_callbacks"></a>
+    <div class="doc doc-contents first">
+
+        <p>TuxSuite runner callbacks. 
+In their specific case they send a header that allows verifying the source of the request.
+Sadly, we have no way of using that header (at least for the moment), since we cannot obtain a signature 
+in the community project.
+They define their own router so they can be integrated into any app.</p>
+<pre><code>from app.ap1.v1.endpoints import tuxsuite_callbacks
+from fastapi import FastAPI
+
+app = FastAPI()
+app.include_router(tuxsuite_callbacks.router)
+</code></pre>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_boot_callback" class="doc doc-heading">
+            <code class="highlight language-python">tuxsuite_boot_callback(x_tux_payload_signature, request, session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Callback for tuxsuite boot test.
+It obtains the test from the database (to get its build id), stores the results in 
+the TestResults table and marks the test as finished.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x_tux_payload_signature</code></b>
+                  (<code><span title="typing.Annotated">Annotated</span>[<span title="str">str</span> | None, <span title="fastapi.Header">Header</span>()]</code>)
+              –
+              <div class="doc-md-description">
+                <p>Payload signature used to verify the origin of the request</p>
+              </div>
+            </li>
+            <li>
+              <b><code>request</code></b>
+                  (<code><span title="app.schemas.tuxsuite.TuxSuiteTestRequest">TuxSuiteTestRequest</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Test evaluation result</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/tuxsuite_callbacks.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/boot", status_code=204)
+async def tuxsuite_boot_callback(x_tux_payload_signature: Annotated[str | None, Header()], request: TuxSuiteTestRequest,
+                         session: SessionDep):
+    """
+    Callback for tuxsuite boot test.
+    It obtains the test from the database (to get its build id), stores the results in 
+    the TestResults table and marks the test as finished.
+
+    :param x_tux_payload_signature: Payload signature used to verify the origin of the request
+    :param request: Test evaluation result
+    :param session: Database session
+
+    """
+    # TODO: add payload signature check (when available)
+    tests_results = request.status
+    logging.info(f"Received results for {tests_results.uid}")
+    test = session.exec(select(ScheduledTest).where(ScheduledTest.test_uid == tests_results.uid)).one()
+    build_id = test.build_id
+    # We mark the all tests from that test suit as received
+    # TODO: Check how many of these are left as non-received and for how long
+    submitted_tests = get_already_submitted_tests(build_id, tests_results.tests, session)
+    parsed_test_results = await parse_tuxsuite_boot2kcidb(tests_results, test, submitted_tests)
+    results = [item.to_json() for item in parsed_test_results]
+    mark_as_received_tests_results([item.test for item in parsed_test_results], build_id, session)
+
+    try:
+        # Only submit results with submitted false
+        submit_kcidb(results)
+        mark_tests_as_submitted([item.test for item in parsed_test_results], build_id, session)
+    except KCIDBSubmitionException:
+        test_row = TestResults(test_uid=tests_results.uid, build_id=build_id ,results=results)
+        session.add(test_row)
+        session.commit() </code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_build_callback" class="doc doc-heading">
+            <code class="highlight language-python">tuxsuite_build_callback(x_tux_payload_signature, request, session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Callback for tuxsuite build.
+It obtains the build from the database, and marks its completion state.
+If it passed the build we submit it to KCIDB</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x_tux_payload_signature</code></b>
+                  (<code><span title="typing.Annotated">Annotated</span>[<span title="str">str</span> | None, <span title="fastapi.Header">Header</span>()]</code>)
+              –
+              <div class="doc-md-description">
+                <p>Payload signature used to verify the origin of the request</p>
+              </div>
+            </li>
+            <li>
+              <b><code>request</code></b>
+                  (<code><span title="app.schemas.tuxsuite.TuxSuiteBuildRequest">TuxSuiteBuildRequest</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Build result</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/tuxsuite_callbacks.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/build", status_code=204)
+async def tuxsuite_build_callback(x_tux_payload_signature: Annotated[str | None, Header()], request: TuxSuiteBuildRequest,
+                         session: SessionDep):
+    """
+    Callback for tuxsuite build.
+    It obtains the build from the database, and marks its completion state.
+    If it passed the build we submit it to KCIDB
+
+    :param x_tux_payload_signature: Payload signature used to verify the origin of the request
+    :param request: Build result
+    :param session: Database session
+    """
+    # TODO: add payload signature check
+    build_results = request.status
+    logging.info(f"Received build results for {build_results.uid}")
+    try:
+        build = session.exec(select(ScheduledBuild).where(ScheduledBuild.build_uid == build_results.uid)).one()
+    except sqlalchemy.exc.NoResultFound:
+        logging.warning(f"Received unexpected build uid: {build_results.uid}")
+        raise HTTPException(status_code=500, detail=f"Invalid build uid {build_results.uid}")
+
+    parsed_build_result = await parse_tuxsuite_build2kcidb(build_results, build)
+    store_build_result(build_results, parsed_build_result, session)
+
+    try:
+        submit_kcidb([parsed_build_result.to_json()])
+        mark_build_as_submitted(build_uid=build_results.uid, session=session)
+    except KCIDBSubmitionException:
+        logging.warning(f"Build {build_results.uid} couldn't be submitted")</code></pre>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="app.api.v1.endpoints.tuxsuite_callbacks.tuxsuite_test_callback" class="doc doc-heading">
+            <code class="highlight language-python">tuxsuite_test_callback(x_tux_payload_signature, request, session)</code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-async"><code>async</code></small>
+  </span>
+
+</h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Callback for tuxsuite test.
+It obtains the test from the database (to get its build id), stores the results in 
+the TestResults table and marks the test as finished.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>x_tux_payload_signature</code></b>
+                  (<code><span title="typing.Annotated">Annotated</span>[<span title="str">str</span> | None, <span title="fastapi.Header">Header</span>()]</code>)
+              –
+              <div class="doc-md-description">
+                <p>Payload signature used to verify the origin of the request</p>
+              </div>
+            </li>
+            <li>
+              <b><code>request</code></b>
+                  (<code><span title="app.schemas.tuxsuite.TuxSuiteTestRequest">TuxSuiteTestRequest</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Test evaluation result</p>
+              </div>
+            </li>
+            <li>
+              <b><code>session</code></b>
+                  (<code><span title="app.core.db.SessionDep">SessionDep</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Database session</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="quote">
+              <summary>Source code in <code>app/api/v1/endpoints/tuxsuite_callbacks.py</code></summary>
+              <pre class="highlight"><code class="language-python">@router.post("/test", status_code=204)
+async def tuxsuite_test_callback(x_tux_payload_signature: Annotated[str | None, Header()], request: TuxSuiteTestRequest,
+                         session: SessionDep):
+    """
+    Callback for tuxsuite test.
+    It obtains the test from the database (to get its build id), stores the results in 
+    the TestResults table and marks the test as finished.
+
+    :param x_tux_payload_signature: Payload signature used to verify the origin of the request
+    :param request: Test evaluation result
+    :param session: Database session
+
+    """
+    # TODO: add payload signature check (when available)
+    tests_results = request.status
+    logging.info(f"Received results for {tests_results.uid}")
+    test = session.exec(select(ScheduledTest).where(ScheduledTest.test_uid == tests_results.uid)).one()
+    build_id = test.build_id
+    # We mark the all tests from that test suit as received
+    # TODO: Check how many of these are left as non-received and for how long
+    submitted_tests = get_already_submitted_tests(build_id, tests_results.tests, session)
+    parsed_test_results = await parse_tuxsuite_test2kcidb(tests_results, test, submitted_tests)
+    results = [item.to_json() for item in parsed_test_results]
+    mark_as_received_tests_results([item.test for item in parsed_test_results], build_id, session)
+
+    try:
+        # Only submit results with submitted false
+        submit_kcidb(results)
+        mark_tests_as_submitted([item.test for item in parsed_test_results], build_id, session)
+    except KCIDBSubmitionException:
+        test_row = TestResults(test_uid=tests_results.uid, build_id=build_id ,results=results)
+        session.add(test_row)
+        session.commit() </code></pre>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dependencies/" class="btn btn-neutral float-right" title="Dependencies">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dependencies/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

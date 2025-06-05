@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Configuration - RISC-V KCI bridge</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Configuration";
+        var mkdocs_page_input_path = "configuration.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> RISC-V KCI bridge
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../api/">API Reference</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../dependencies/">Dependencies</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Configuration</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#env">.env</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#env_caddy">.env_caddy</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#database">Database</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../runners/">Runners</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">RISC-V KCI bridge</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Configuration</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="configuration">Configuration</h1>
+<h2 id="environment-variables">Environment variables</h2>
+<p>The app is configured via environment variables, which are defined in tow <code>.env</code> files.</p>
+<ol>
+<li><code>.env</code>: Contains sereval definitions that affect the behaviour of the app itself.</li>
+<li><code>.env_caddy</code>: Variables used to configure <code>Caddy</code>.</li>
+</ol>
+<p>These were splitted since they're used by two different containers. Templates for both of this files can be found in the root of the project, in <code>.env.example</code> and <code>.env_caddy.example</code> respectively.</p>
+<h3 id="env"><code>.env</code></h3>
+<ul>
+<li><code>PROJECT_NAME</code>: Name of the project</li>
+<li><code>BACKEND_CORS_ORIGINS</code>: CORS configuration</li>
+<li><code>LOGS_FILE</code>: Path to the file used to store logs</li>
+<li><code>DEBUG</code>: <code>true</code>|<code>false</code></li>
+<li><code>DB_URL</code>: URL used to connect to the database</li>
+<li><code>DB_CERT_PATH</code>: Path to the certificate used when performing an SSL conenction</li>
+<li><code>TUXSUITE_TOKEN</code>: Access token used to connect to TuxSuite. Only required when using <code>tuxsuite</code>runner. Please contact the <a href="https://tuxsuite.com/">TuxSuite team</a> to request a token</li>
+<li><code>KCIDB_SUBMIT_URL</code>: KCIDB URL used to perform submissions</li>
+<li><code>KCIDB_TOKEN</code>: Token required to perform submissions. Please contact the <a href="https://github.com/kernelci/kcidb?tab=readme-ov-file">KernelCI team</a> to get one</li>
+</ul>
+<h3 id="env_caddy"><code>.env_caddy</code></h3>
+<ul>
+<li><code>EXT_ENDPOINT1</code>: URL used to access the VM</li>
+<li><code>LOCAL_1</code>: <code>localhost</code></li>
+<li><code>LOCAL_2</code>: <code>127.0.0.1</code>, or any other IP used to refer to <code>localhost</code></li>
+</ul>
+<h2 id="database">Database</h2>
+<p>The app requires a database to store tests that have already been run and build results.
+The connection to the database is setup using <code>SQLAlchemy</code>. You can find more information regarding <code>SQLAlchemy</code> database support <a href="https://docs.sqlalchemy.org/en/20/dialects/index.html">here</a>.</p>
+<p>The <code>.env</code> file contains to variables related to database configuration:</p>
+<ol>
+<li><code>DB_URL</code>: Corresponds to the database URL. More information regarding how these should be constructed can be found in <code>SQLAlchemy</code><a href="https://docs.sqlalchemy.org/en/20/core/engines.html">documentation</a>.</li>
+<li><code>DB_CERT_PATH</code>: Path to the certificate used when performing and SSL connection. If you're running the app in a container this file should be <a href="https://docs.docker.com/engine/storage/bind-mounts/">bind mounted</a>, so that it becomes accessible inside the container.</li>
+</ol>
+<p>The app has been tested using <code>SQLite</code> and <code>Postgres</code>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../dependencies/" class="btn btn-neutral float-left" title="Dependencies"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../deployment/" class="btn btn-neutral float-right" title="Deployment">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../dependencies/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../deployment/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
