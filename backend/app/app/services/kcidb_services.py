@@ -1,7 +1,7 @@
 
 from app.utils.exceptions.tests_results_exceptions import KCIDBSubmitionException
 from typing_extensions import Self
-from datetime import datetime
+from datetime import datetime, UTC
 from app.core.config import settings
 from abc import ABC, abstractmethod
 import requests
@@ -72,10 +72,14 @@ class KCIDBTestSubmission(KCIDBSubmission):
                 "origin": self._origin,
                 "status": self.__result,
                 "path": self.__path,
-                "start_time": self.__started_at.replace(microsecond=0).isoformat(),
+                "start_time": self.__started_at.astimezone(UTC).replace(microsecond=0).isoformat(),
+                "environment": {
+                    "misc": {
+                        "platform": self.__platform,
+                    }
+                },
                 "misc": {
                     "runtime": self.__runner,
-                    "platform": self.__platform
                 }
             }
 
@@ -97,7 +101,7 @@ class KCIDBuildSubmission(KCIDBSubmission):
                 "origin": self._origin,
                 "architecture": self.__arch,
                 "compiler": self.__compiler,
-                "start_time": self.__start_time.replace(microsecond=0).isoformat()
+                "start_time": self.__start_time.astimezone(UTC).replace(microsecond=0).isoformat(),
             }
 
 _submitter = KCITestResultsSubmitter()
